@@ -1,0 +1,559 @@
+* {
+  font-family: "Josefin Sans", sans-serif !important;
+  font-weight: bold;
+}
+
+a,
+a:hover,
+.form-footer a:hover {
+  text-decoration: none;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.infocontainer {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.infocontainer0,
+.logincontainer1 {
+  width: 50%;
+  float: left;
+}
+
+.infocontainer0 img {
+  width: 80%;
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
+.form-container {
+  border: 1px solid rgb(241, 241, 241);
+  box-shadow: 2px 3px 5px rgb(65, 171, 231);
+  width: 600px;
+  padding: 30px;
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  /* top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    position: absolute; */
+}
+
+.form-control,
+.react-tel-input .form-control,
+.birthdate,
+.form-drop {
+  border-bottom-color: rgb(65, 171, 231);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0px;
+  font-size: 13px;
+  height: 32.5px;
+}
+
+.react-tel-input .form-control {
+  width: 100% !important;
+}
+
+.btn-style {
+  width: 100%;
+  background-color: rgb(0, 30, 48);
+  color: white;
+  border-radius: 20px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-footer {
+  text-align: center;
+}
+
+.navbar {
+  background-color: rgb(255, 255, 255);
+  height: 60px;
+  padding: 5px !important;
+  border-bottom: 2px solid rgb(0, 30, 48);
+  box-shadow: 0px 1px 5px rgb(65, 171, 231);
+}
+
+.navbarlogo,
+.navbarlogo img {
+  max-height: 50px;
+}
+
+.navbar-toggler {
+  padding: 0;
+  font-size: inherit;
+}
+
+.iconstyle {
+  color: rgb(0, 30, 48);
+  margin: 10px;
+}
+
+.headerend {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.riNotification {
+  position: relative;
+  margin: 10px;
+  font-size: 25px;
+}
+
+.date-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.start-date {
+  width: 49%;
+}
+
+.end-date {
+  width: 49%;
+}
+
+.faUserAlt {
+  position: relative;
+  margin: 10px;
+  font-size: 22px;
+}
+
+.faSignOutAlt {
+  font-size: 25px;
+}
+
+.dropdown-menu {
+  left: auto;
+  right: 0;
+  color: rgb(0, 30, 48);
+  box-shadow: 0px 1px 5px rgb(65, 171, 231);
+  border: none;
+}
+
+.dropdown-toggle::after {
+  content: none;
+}
+
+.navbar-light .navbar-toggler {
+  border: none;
+}
+
+.navbar-light .navbar-toggler-icon,
+.navbar-light .navbar-nav .active > .nav-link {
+  color: rgb(0, 30, 48);
+}
+
+.navbar-light .navbar-nav .nav-link,
+.list-header i {
+  color: rgb(65, 171, 231);
+}
+
+#arrow {
+  font-size: 50px;
+  position: fixed;
+  bottom: 5px;
+  right: 30px;
+  cursor: pointer;
+  /* background-color: rgb(65,171,231); */
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 50px;
+  z-index: 10;
+}
+
+select.form-control:not([size]):not([multiple]) {
+  height: 32.5px;
+}
+
+.adduser-btn {
+  background-color: rgb(0, 30, 48);
+  border-radius: 25px;
+  border: 1px solid rgb(228, 228, 228);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 20px;
+  color: white !important;
+}
+
+.adduser-btn a {
+  color: white !important;
+}
+
+.faUserPlus {
+  position: relative;
+  top: 2px;
+  margin: 0 5px;
+}
+
+.list-container {
+  margin-top: 30px;
+}
+
+.list-header {
+  font-size: 23px;
+  font-weight: bolder;
+  margin-bottom: 5px;
+  color: rgb(0, 30, 48);
+}
+
+.faUserTie {
+  position: relative;
+  top: 2px;
+}
+
+.faUserFriends {
+  position: relative;
+  top: 3px;
+}
+
+.faUsers {
+  position: relative;
+  top: 3px;
+}
+
+.member-container {
+  width: 200px;
+  height: 230px;
+  text-align: center;
+  padding: 5px;
+  border: 0.5px solid rgb(238, 238, 238);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.birthday-image {
+  width: 200px;
+  height: 155px;
+  margin: auto;
+}
+
+.birth-frame {
+  width: 160px;
+  height: 160px;
+  position: relative;
+  z-index: 1;
+}
+
+.birth-image{
+  width: 80px;
+  height: 80px;
+  position: relative;
+  bottom: 121px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.member-name {
+  font-size: 17px;
+  height: 30px;
+}
+
+.btn-check {
+  float: left;
+  height: 20px;
+  width: 20px;
+}
+
+.member-image-container {
+  height: 80px;
+  width: 80px;
+  position: relative;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  margin: auto;
+}
+
+.member-image-container img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50% !important;
+  object-fit: cover;
+}
+
+.member-name {
+  font-size: 17px;
+  height: 30px;
+}
+.member-icon-list {
+  justify-content: space-evenly;
+  color: rgb(65, 171, 231);
+  font-size: 30px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.button-container button {
+  border-radius: 5px;
+  height: 25px;
+  font-size: 15px;
+  /* border: 1px solid #000; */
+  background-color: #fff;
+  outline: none;
+}
+
+.btn-edit {
+  width: 70px;
+  color: white;
+  background-color: rgb(0, 30, 48);
+  border-radius: 20px;
+  padding: 0px 7px;
+  border: 0.5px solid rgb(238, 238, 238);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 1px 3px;
+  font-weight: bold;
+}
+
+.btn-edit:hover {
+  color: rgb(0, 30, 48);
+  background-color: white;
+}
+
+.btn-delete {
+  width: 70px;
+  background-color: red !important;
+  color: white;
+  border-radius: 20px !important;
+  padding: 2px 7px !important;
+  border: 0.5px solid rgb(238, 238, 238);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 1px 3px;
+}
+
+.btn-delete:hover {
+  color: red;
+  background-color: white !important;
+}
+
+.RiPhoneLine {
+  font-size: 25px;
+  color: #000;
+}
+
+.RiPhoneLine:hover {
+  font-size: 30px;
+  color: #000;
+}
+
+.RiWhatsappLine {
+  font-size: 25px;
+  color: rgb(45, 130, 50);
+}
+
+.RiWhatsappLine:hover {
+  font-size: 30px;
+  color: rgb(45, 130, 50);
+}
+
+.RiMessage2Line {
+  font-size: 25px;
+}
+
+.RiMessage2Line:hover {
+  font-size: 30px;
+}
+
+.addusercontainer {
+  border: 1px solid rgb(241, 241, 241);
+  box-shadow: 2px 3px 5px rgb(65 171 231);
+  width: 60%;
+  padding: 20px;
+  margin: auto;
+  position: relative;
+  top: 80px;
+}
+
+.birthdate,
+.form-drop {
+  padding: 0.375rem 0.75rem;
+}
+
+.react-tel-input .form-control,
+.birthdate,
+.form-drop {
+  width: 100%;
+  color: #495057;
+  line-height: 1.5;
+  height: auto;
+}
+
+.adduserform-btn {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+}
+
+.birthdaycontainer {
+  width: 90%;
+  margin: auto;
+}
+
+.birthdayimagecontainer {
+  height: 500px;
+  width: 500px;
+  position: absolute;
+  float: left;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  box-shadow: 2px 3px 5px rgb(197, 197, 197);
+}
+
+.birthdayimagecontainer img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50% !important;
+  object-fit: cover;
+}
+.birthdayname {
+  position: absolute;
+  height: 70px;
+  width: 350px;
+  background: rgb(255, 124, 0);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 125, 17, 1) 35%,
+    rgba(226, 87, 0, 1) 100%
+  );
+  color: rgb(0, 0, 0);
+  box-shadow: 2px 3px 5px rgb(116, 116, 116);
+  border-radius: 40px;
+  text-align: center;
+  font-size: 35px;
+  top: 515px;
+  left: 150px;
+  padding-top: 10px;
+}
+
+.birthdaydetailcontainer {
+  height: 400px;
+  width: 75%;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 2px 3px 5px rgb(197, 197, 197);
+  margin-left: 25%;
+  top: 50px;
+  z-index: -5;
+  border-top-right-radius: 200px;
+  border-bottom-right-radius: 200px;
+  position: relative;
+}
+
+.birthdaydetailcontainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-right-radius: 200px;
+  border-bottom-right-radius: 200px;
+}
+
+.form-text {
+  font-weight: bolder;
+}
+
+.popup-box {
+  position: fixed;
+  background: #00000050;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 30;
+}
+
+.box {
+  position: relative;
+  width: 70%;
+  margin: 0 auto;
+  height: auto;
+  max-height: 70vh;
+  margin-top: calc(100vh - 85vh - 20px);
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  border: 1px solid #999;
+  overflow: auto;
+}
+
+.close-icon {
+  content: "x";
+  cursor: pointer;
+  position: fixed;
+  right: calc(15% - 30px);
+  top: calc(100vh - 85vh - 33px);
+  background: #ededed;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  line-height: 20px;
+  text-align: center;
+  border: 1px solid #999;
+  font-size: 20px;
+}
+
+.password-container {
+  border: 1px solid rgb(241, 241, 241);
+  box-shadow: 2px 3px 5px rgb(65, 171, 231);
+  width: 600px;
+  padding: 30px;
+  margin: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  position: absolute;
+}
+
+.form-footer{
+  text-align: end;
+  font-size: 15px;
+}
+
+.popup-container{
+  display: flex;
+}
+
+.popup-image-container {
+  width: 400px;
+  height: 300px;
+}
+
+.popup-image{
+  width: 100%;
+  height: 100%;
+}
+
+.popup-content{
+  width: calc(100% - 400px);
+  padding-left: 20px;
+}
+
+.popup-title{
+  margin-bottom: auto;
+  text-decoration: underline;
+  font-size: 30px;
+  font-variant: all-petite-caps;
+  word-wrap: break-word;
+}
+
+.popup-message{
+  word-wrap: break-word;
+}
