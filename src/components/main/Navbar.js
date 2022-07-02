@@ -22,7 +22,7 @@ export const Navbar = () => {
   const logout = async (type) => {
     const token = localStorage.getItem("userToken");
     const response = await fetch(type === "all" ? LogoutAllAPI : LogoutAPI, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
