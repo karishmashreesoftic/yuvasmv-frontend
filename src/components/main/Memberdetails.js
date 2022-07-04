@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import newUserValidation from "../validation/useNewUserValidation";
-import { AllAdminsAPI, GetGroupLeadersAPI, MemberAPI } from "../../services/APIRoutes";
+import { GetAdminsAPI, GetGroupLeadersAPI, MemberAPI } from "../../services/APIRoutes";
 
 export const Memberdetails = () => {
   const {id} = useParams();
@@ -16,7 +16,6 @@ export const Memberdetails = () => {
   } = newUserValidation();
   const [admins, setAdmins] = useState([])
   const [groupleaders, setGroupleaders] = useState([])
-
 
   const token = localStorage.getItem("userToken");
 
@@ -33,9 +32,9 @@ export const Memberdetails = () => {
       });
 
       const t = await response.json();
-      setInitials(t.member)
+      setInitials(t)
 
-      const aresponse = await fetch(AllAdminsAPI, {
+      const aresponse = await fetch(GetAdminsAPI, {
         method: "GET",
         headers: {
           "Content-Type": "application/json", 
@@ -44,11 +43,7 @@ export const Memberdetails = () => {
       });
 
       const a = await aresponse.json()
-      setAdmins(a.list)
-
-      const filter = {
-        "mentor": values.mentor
-      }
+      setAdmins(a)
 
       const gresponse = await fetch(GetGroupLeadersAPI, {
         method: "POST",
@@ -56,17 +51,33 @@ export const Memberdetails = () => {
           "Content-Type": "application/json", 
           Authorization: token,
         },
-        body: JSON.stringify(filter)
+        body: JSON.stringify({})
       });
   
       const g = await gresponse.json()
-      setGroupleaders(g.list)
+      setGroupleaders(g)
       
     }
 
     fetchData();
 
   }, [])
+
+  async function handleGroupleaders(val){
+
+    const gresponse = await fetch(GetGroupLeadersAPI, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", 
+        Authorization: token,
+      },
+      body: JSON.stringify({"mentor": [val]})
+    });
+
+    const g = await gresponse.json()
+    setGroupleaders(g)
+
+  }
 
   return (
     <div>
@@ -222,6 +233,44 @@ export const Memberdetails = () => {
               )}
             </div>
             <div className="from-group col-md-5">
+              <label htmlFor="mentor">
+                Mentor
+                {values.membertype === "admin" ? null : (
+                  <span
+                    style={{ display: "inline" }}
+                    className="form-text text-danger"
+                  >
+                    {" "}
+                    *
+                  </span>
+                )}
+              </label>
+              <select
+                className="form-control"
+                value={values.mentor ? values.mentor : ""}
+                onChange={(e) => {handleChange("mentor", e.target.value);handleGroupleaders(e.target.value)}}
+                name="mentor"
+                id="mentor"
+                placeholder="Select Mentor"
+                required={values.membertype === "admin" ? false : true}
+                disabled={values.membertype === "admin" ? true : false}
+              >
+                <option value="" disabled>
+                  Select Mentor...
+                </option>
+                {
+                  admins.map((a)=>
+                    <option key={a.fullname} value={a.fullname}>{a.fullname}</option>
+                  )
+                }
+              </select>
+              {errors.groupleader && (
+                <small className="form-text text-danger">
+                  {errors.groupleader}
+                </small>
+              )}
+            </div>
+            <div className="from-group col-md-5">
               <label htmlFor="groupleader">
                 Group Leader
                 {values.membertype === "admin" ||
@@ -261,44 +310,6 @@ export const Memberdetails = () => {
                 {
                   groupleaders.map((g)=>
                     <option key={g.fullname} value={g.fullname}>{g.fullname}</option>
-                  )
-                }
-              </select>
-              {errors.groupleader && (
-                <small className="form-text text-danger">
-                  {errors.groupleader}
-                </small>
-              )}
-            </div>
-            <div className="from-group col-md-5">
-              <label htmlFor="mentor">
-                Mentor
-                {values.membertype === "admin" ? null : (
-                  <span
-                    style={{ display: "inline" }}
-                    className="form-text text-danger"
-                  >
-                    {" "}
-                    *
-                  </span>
-                )}
-              </label>
-              <select
-                className="form-control"
-                value={values.mentor ? values.mentor : ""}
-                onChange={(e) => handleChange("mentor", e.target.value)}
-                name="mentor"
-                id="mentor"
-                placeholder="Select Mentor"
-                required={values.membertype === "admin" ? false : true}
-                disabled={values.membertype === "admin" ? true : false}
-              >
-                <option value="" disabled>
-                  Select Mentor...
-                </option>
-                {
-                  admins.map((a)=>
-                    <option key={a.fullname} value={a.fullname}>{a.fullname}</option>
                   )
                 }
               </select>

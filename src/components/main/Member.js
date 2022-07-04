@@ -18,8 +18,8 @@ export const Member = ({ data, handleChange }) => {
     });
 
     const deleteddata = await response.json();
-    if (deleteddata.member) {
-      alert(deleteddata.member.fullname + " Deleted");
+    if (deleteddata) {
+      alert(deleteddata.fullname + " Deleted");
       window.location.reload();
     }
   };

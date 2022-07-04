@@ -45,7 +45,7 @@ export const Navbar = () => {
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="navbarlogo">
           <Link to="/home">
-            <img src="image/navbarlogo.png" alt="logo" />
+            <img src="/image/navbarlogo.png" alt="logo" />
           </Link>
         </div>
         <button

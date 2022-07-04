@@ -55,7 +55,7 @@ export const Home = () => {
       });
   
       const a = await response.json()
-      setAdmins(a.list)
+      setAdmins(a)
 
   }
 
@@ -75,7 +75,7 @@ export const Home = () => {
     });
 
     const g = await response.json()
-    setGroupleaders(g.list)
+    setGroupleaders(g)
     
   }
 
@@ -102,7 +102,7 @@ export const Home = () => {
     });
 
     const m = await response.json()
-    setMembers(m.list)
+    setMembers(m)
     
   }
 
