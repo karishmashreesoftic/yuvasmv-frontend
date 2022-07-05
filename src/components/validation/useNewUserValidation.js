@@ -129,7 +129,9 @@ const useNewUserValidation = () => {
               });
           
               const user = await response.json()
-              console.log(user.newMember)
+              if(user){
+                navigate("/home")
+              }
       
             setValues({
                 fullname: "",
@@ -148,7 +150,6 @@ const useNewUserValidation = () => {
                 membertype: ""
             });
 
-            navigate("/home")
       
           } else {
             var t = "";
@@ -178,7 +179,7 @@ const useNewUserValidation = () => {
               });
           
               const user = await response.json()
-              if(user.member){
+              if(user){
                 navigate("/home")
               }
               localStorage.removeItem("memberId")

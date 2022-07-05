@@ -9,6 +9,11 @@ export const Member = ({ data, handleChange }) => {
   const token = localStorage.getItem("userToken");
 
   const deleteUser = async () => {
+
+  const a = window.confirm(`Are you sure about deleting ${data.membertype} ${data.fullname}`)
+
+  if(a===true){
+    
     const response = await fetch(DeleteMemberAPI + `/${data._id}`, {
       method: "DELETE",
       headers: {
@@ -22,6 +27,8 @@ export const Member = ({ data, handleChange }) => {
       alert(deleteddata.fullname + " Deleted");
       window.location.reload();
     }
+  }
+
   };
 
   const goToCarddetails = (e) => {

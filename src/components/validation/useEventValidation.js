@@ -57,15 +57,15 @@ const useEventValidation = () => {
 
     const result = response.status;
 
-    console.log("status...",result)
-
+    if(result===200){
       setValues({
         startdate: "",
         enddate: "",
         title: "",
         message: "",
       });
-
+    }
+      
     }
   };
 

@@ -10,10 +10,111 @@ export const Home = () => {
   const [admins, setAdmins] = useState([])
   const [groupleaders, setGroupleaders] = useState([])
   const [members, setMembers] = useState([])
+  const [searchText, setSearchText] = useState("");
+  const [filteredAdmins, setFilteredAdmins] = useState([]);
+  const [filteredGroupleaders, setFilteredGroupleaders] = useState([]);
+  const [filteredMembers, setFilteredMembers] = useState([]);
   const { selectedadmin, selectedgroupleader, handleChange } = checkBoxValidation()
 
   let navigate = useNavigate();
   const token = localStorage.getItem("userToken");
+
+  const handleChangeSearch = (value) => {
+    if (value === " ") return;
+    setSearchText(value);
+    filterAdminData(value);
+    filterGroupleaderData(value);
+    filteredMembersData(value);
+  };
+
+  const filterAdminData = (value) => {
+
+    const lowercasedValue = value.toLowerCase().trim();
+
+    if (lowercasedValue === "") setFilteredAdmins(admins);
+    else {
+      const filteredData = admins.filter((item) => {
+
+        const { fullname, searchTerm = fullname.toLowerCase() } = item;
+
+        if (searchTerm.includes(lowercasedValue)) return true;
+        else {
+          const splittedValue = searchTerm.split(" ");
+          for (let i = 0; i < splittedValue.length; i++) {
+            const element = splittedValue[i];
+            if (element.trim()) {
+              if (element.includes(lowercasedValue)) return true;
+            }
+          }
+        }
+        return false;
+
+      }); 
+
+      setFilteredAdmins(filteredData);
+    }
+
+  };
+
+  const filterGroupleaderData = (value) => {
+
+    const lowercasedValue = value.toLowerCase().trim();
+
+    if (lowercasedValue === "") setFilteredGroupleaders(groupleaders);
+    else {
+
+      const filteredData = groupleaders.filter((item) => {
+
+        const { fullname, searchTerm = fullname.toLowerCase() } = item;
+
+        if (searchTerm.includes(lowercasedValue)) return true;
+        else {
+          const splittedValue = searchTerm.split(" ");
+          for (let i = 0; i < splittedValue.length; i++) {
+            const element = splittedValue[i];
+            if (element.trim()) {
+              if (element.includes(lowercasedValue)) return true;
+            }
+          }
+        }
+        return false;
+
+      }); 
+
+      setFilteredGroupleaders(filteredData);
+    }
+
+  };
+
+  const filteredMembersData = (value) => {
+
+    const lowercasedValue = value.toLowerCase().trim();
+
+    if (lowercasedValue === "") setFilteredMembers(members);
+    else {
+
+      const filteredData = members.filter((item) => {
+
+        const { fullname, searchTerm = fullname.toLowerCase() } = item;
+
+        if (searchTerm.includes(lowercasedValue)) return true;
+        else {
+          const splittedValue = searchTerm.split(" ");
+          for (let i = 0; i < splittedValue.length; i++) {
+            const element = splittedValue[i];
+            if (element.trim()) {
+              if (element.includes(lowercasedValue)) return true;
+            }
+          }
+        }
+        return false;
+
+      }); 
+
+      setFilteredMembers(filteredData);
+    }
+
+  };
   
   useEffect(() => {
 
@@ -42,6 +143,12 @@ export const Home = () => {
     fetchData();
 
   }, [selectedadmin, selectedgroupleader]);
+
+  useEffect(() => {
+    filterAdminData("");
+    filterGroupleaderData("");
+    filteredMembersData("");
+  }, [admins,groupleaders,members]);
 
 
   async function getAdmins(){
@@ -107,24 +214,35 @@ export const Home = () => {
   }
 
   return (
-    <div style={{ marginTop: "70px", marginLeft: "30px" }}>
+    <div style={{ marginTop: "70px", marginLeft: "30px", marginRight: "30px" }}>
 
-      <div>
+      <div className="search-bar">
         <button className="btn adduser-btn" onClick={()=>{navigate("/adduser")}}>
             <FaUserPlus className="faUserPlus" />
             Add User
         </button>
+        <div>
+          <input
+            type="text"
+            className="search"
+            onChange={(e) => handleChangeSearch(e.target.value)}
+            value={searchText}
+            name="search"
+            placeholder="Search..."
+            autoComplete="off"
+          />
+        </div>
       </div>
 
       {
-        admins.length!==0 &&
+        filteredAdmins.length!==0 &&
         <div className="list-container">
           <div className="list-header">
             <FaUserTie className="faUserTie" /> Admins
           </div>
           <div className="list-member-container d-flex align-content-start flex-wrap">
-            {admins &&
-              admins.map((admin)=>
+            {
+              filteredAdmins.map((admin)=>
                 <Member handleChange={handleChange} key={admin._id} data={admin} />
               )
             }
@@ -134,14 +252,14 @@ export const Home = () => {
         
 
       {
-        groupleaders.length!==0 &&
+        filteredGroupleaders.length!==0 &&
         <div className="list-container">
           <div className="list-header">
             <FaUserFriends className="faUserFriends" /> Group Leaders
           </div>
           <div className="list-member-container d-flex align-content-start flex-wrap">
             {
-              groupleaders.map((groupleader)=>
+              filteredGroupleaders.map((groupleader)=>
                 <Member handleChange={handleChange} key={groupleader._id} data={groupleader} />
               )
             }
@@ -149,15 +267,16 @@ export const Home = () => {
         </div>
       }
 
+
       {
-        members.length!==0 &&
+        filteredMembers.length!==0 &&
         <div className="list-container">
           <div className="list-header">
             <FaUsers className="faUsers" /> Members
           </div>
           <div className="list-member-container d-flex align-content-start flex-wrap">
             {
-              members.map((member)=>
+              filteredMembers.map((member)=>
                 <Member handleChange={handleChange} key={member._id} data={member} />
               )
             }

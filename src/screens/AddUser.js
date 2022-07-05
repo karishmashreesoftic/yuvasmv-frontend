@@ -2,7 +2,7 @@ import "react-phone-input-2/lib/style.css";
 import React, { useState, useEffect } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import newUserValidation from "../components/validation/useNewUserValidation";
-import { AllAdminsAPI, GetGroupLeadersAPI } from "../services/APIRoutes";
+import { GetAdminsAPI, GetGroupLeadersAPI } from "../services/APIRoutes";
 
 export const AddUser = () => {
 
@@ -21,7 +21,7 @@ export const AddUser = () => {
 
     async function fetchData(){
   
-      const aresponse = await fetch(AllAdminsAPI, {
+      const aresponse = await fetch(GetAdminsAPI, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -30,7 +30,7 @@ export const AddUser = () => {
       });
 
       const a = await aresponse.json()
-      setAdmins(a.list)
+      setAdmins(a)
 
       const filter = {
         "mentor": values.mentor
@@ -45,7 +45,7 @@ export const AddUser = () => {
       });
   
       const g = await response.json()
-      setGroupleaders(g.list)
+      setGroupleaders(g)
 
     }
 

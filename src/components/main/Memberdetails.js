@@ -21,6 +21,8 @@ export const Memberdetails = () => {
 
   useEffect(() => {
 
+     localStorage.setItem("memberId",id)
+
      async function fetchData(){
 
       const response = await fetch(MemberAPI+`/${id}`, {
@@ -51,7 +53,7 @@ export const Memberdetails = () => {
           "Content-Type": "application/json", 
           Authorization: token,
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({"mentor": [values.mentor]})
       });
   
       const g = await gresponse.json()
