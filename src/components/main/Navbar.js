@@ -19,6 +19,11 @@ export const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleEventSubmit = async (e) =>{
+    await handleSubmit(e);
+    togglePopup();
+  }
+
   const logout = async (type) => {
     const token = localStorage.getItem("userToken");
     const response = await fetch(type === "all" ? LogoutAllAPI : LogoutAPI, {
@@ -152,7 +157,7 @@ export const Navbar = () => {
                                 handleChange("photos", e.target.files)
                               } multiple/><br/>
                       <button onClick={handleCancel} className="btn btn-style" style={{width:"20%",backgroundColor: "#495057"}}>Reset</button>
-                      <button onClick={handleSubmit} className="btn btn-style" style={{width:"20%",marginLeft: "20px"}}>Add</button>
+                      <button onClick={(e)=>handleEventSubmit(e)} className="btn btn-style" style={{width:"20%",marginLeft: "20px"}}>Add</button>
                     </>
                   }
                   handleClose={togglePopup}

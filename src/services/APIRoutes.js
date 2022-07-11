@@ -14,6 +14,8 @@ const CreateMemberAPI = `${baseURL}/createmember`
 const DeleteMemberAPI = `${baseURL}/deletemember`
 const EditMemberAPI = `${baseURL}/editmember`
 
+const UploadMembersAPI = `${baseURL}/uploadmembersdata`
+
 const GetAdminsAPI = `${baseURL}/getadmins`
 const GetGroupLeadersAPI = `${baseURL}/getgroupleaders`
 const GetMembersAPI = `${baseURL}/getmembers`
@@ -37,5 +39,6 @@ module.exports = {
     EditMemberAPI, 
     CreateEventAPI,
     ForgotPasswordAPI,
-    ChangePasswordAPI
+    ChangePasswordAPI,
+    UploadMembersAPI
  }

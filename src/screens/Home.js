@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { HomeAPI, GetAdminsAPI, GetGroupLeadersAPI, GetMembersAPI } from "../services/APIRoutes";
+import React, { useEffect, useState, useRef } from "react";
+import { HomeAPI, GetAdminsAPI, GetGroupLeadersAPI, GetMembersAPI, UploadMembersAPI } from "../services/APIRoutes";
 import { useNavigate } from "react-router-dom";
 import { Member } from "../components/main/Member";
 import { FaUserPlus, FaUserTie, FaUserFriends, FaUsers } from "react-icons/fa";
 import checkBoxValidation from '../components/validation/useCheckBoxValidation'
+import { MdGroupAdd } from "react-icons/md";
 
 export const Home = () => {
 
@@ -15,9 +16,61 @@ export const Home = () => {
   const [filteredGroupleaders, setFilteredGroupleaders] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
   const { selectedadmin, selectedgroupleader, handleChange } = checkBoxValidation()
+  const inputRef = useRef(null);
 
   let navigate = useNavigate();
   const token = localStorage.getItem("userToken");
+  let formData = new FormData();
+
+  const fileChangedHandler = async (event) => {
+
+    event.preventDefault();
+
+    const file = event.target.files[0];
+    const fileExtention = file.name.split('.').pop();
+
+    if (fileExtention === "xlsx") {
+      formData.append("members",file)
+
+      const response = await fetch(UploadMembersAPI, {
+        method: "POST",
+        headers: {
+            Authorization: token,
+        },
+        body: formData,
+      });
+
+      const result = await response.json()
+      const members_unsuccessfull = result.members
+      const fault_header = result.header
+
+      if(response.status===201 && Object.keys(members_unsuccessfull).length!==0){
+        var message = `Email Id or Mobile Number following number have already present. You need to use diffrent one...\n\n`
+        for(let i in members_unsuccessfull){
+          message += `${i} : ${members_unsuccessfull[i]}\n`
+        }
+        window.alert(message)
+        window.location.reload()
+      }else if(response.status===201 && Object.keys(fault_header).length!==0){
+        message = `The below given columns are either not present or have different name. Please check and try again...\n\n`
+        for(let i in fault_header){
+          message += `${i} : ${fault_header[i]}\n`
+        }
+        window.alert(message)
+        window.location.reload()
+      }else{
+        window.alert("Members created successfully")
+        window.location.reload()
+      }
+
+    }else {
+      window.alert("File does not support. You must use .xlsx");
+      window.location.reload()
+    }
+  }
+  const handleClick = () => {
+    inputRef.current.click();
+  }
 
   const handleChangeSearch = (value) => {
     if (value === " ") return;
@@ -217,11 +270,30 @@ export const Home = () => {
     <div style={{ marginTop: "70px", marginLeft: "30px", marginRight: "30px" }}>
 
       <div className="search-bar">
-        <button className="btn adduser-btn" onClick={()=>{navigate("/adduser")}}>
+        <div className="adduser-btn-container">
+          <button
+            className="btn adduser-btn"
+            onClick={() => {
+              navigate("/adduser");
+            }}
+          >
             <FaUserPlus className="faUserPlus" />
             Add User
-        </button>
-        <div>
+          </button>
+          <button className="btn adduser-btn" onClick={handleClick}>
+            <MdGroupAdd className="faUserPlus" />
+            Add Users From File
+            <input
+              className="btn btn-secondary"
+              id="fileInput"
+              type="file"
+              onChange={fileChangedHandler}
+              style={{display: 'none'}}
+              ref={inputRef}
+            />
+          </button>
+        </div>
+        <div className="search-container">
           <input
             type="text"
             className="search"

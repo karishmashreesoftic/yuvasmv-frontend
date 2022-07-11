@@ -190,6 +190,7 @@ select.form-control:not([size]):not([multiple]) {
   font-size: 20px;
   font-weight: bold;
   margin-top: 20px;
+  margin-right: 10px;
   color: white !important;
 }
 
