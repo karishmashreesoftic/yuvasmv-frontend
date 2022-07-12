@@ -15,10 +15,11 @@ const useEventValidation = () => {
   let formData = new FormData();
 
   const handleChange = (name, val) => {
+
     if (name === "photos") {
       setPhotos(val);
     } else {
-      if(val.length===0){
+      if(val===""){
         setErrors({
           ...errors,
           [name]: "Please fill the field",
@@ -34,8 +35,27 @@ const useEventValidation = () => {
     }
   };
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    let blank_fields = {}
+    let flag= true
+
+    for(let i in Object.keys(values)){
+      if(values[Object.keys(values)[i]]===""){
+        blank_fields = {
+          ...blank_fields,
+          [Object.keys(values)[i]]: "Please fill the field"   
+        }
+        flag=false
+      }
+    }
+
+    if(flag===false){
+      setErrors(blank_fields)
+      return false
+    }
 
     formData.append("startdate", values.startdate);
     formData.append("enddate", values.enddate);
@@ -45,7 +65,7 @@ const useEventValidation = () => {
         formData.append("photos", photos[i]);
     }
 
-    if (Object.keys(values).length !== 0) {
+    if (Object.keys(values).length !== 0 || Object.keys(errors).length === 0) {
 
     const response = await fetch(CreateEventAPI, {
         method: "POST",
@@ -66,7 +86,7 @@ const useEventValidation = () => {
       });
 
     }
-      
+      return true;
     }
   };
 
@@ -77,6 +97,7 @@ const useEventValidation = () => {
       title: "",
       message: "",
     });
+    setErrors({})
   };
 
   return { values, errors, handleSubmit, handleChange, handleCancel };

@@ -22,7 +22,7 @@ export const Memberdetails = () => {
   useEffect(() => {
 
      localStorage.setItem("memberId",id)
-
+     
      async function fetchData(){
 
       const response = await fetch(MemberAPI+`/${id}`, {
@@ -47,23 +47,14 @@ export const Memberdetails = () => {
       const a = await aresponse.json()
       setAdmins(a)
 
-      const gresponse = await fetch(GetGroupLeadersAPI, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", 
-          Authorization: token,
-        },
-        body: JSON.stringify({"mentor": [values.mentor]})
-      });
+      handleGroupleaders(t.mentor)
   
-      const g = await gresponse.json()
-      setGroupleaders(g)
-      
     }
 
     fetchData();
 
   }, [])
+
 
   async function handleGroupleaders(val){
 
@@ -101,7 +92,7 @@ export const Memberdetails = () => {
                 type="text"
                 className="form-control"
                 onChange={(e) => handleChange("fullname", e.target.value)}
-                value={values.fullname}
+                value={values.fullname ? values.fullname : ""}
                 name="fullname"
                 id="fullname"
                 placeholder="Full Name"
@@ -117,7 +108,7 @@ export const Memberdetails = () => {
                 type="text"
                 className="form-control"
                 onChange={(e) => handleChange("memberid", e.target.value)}
-                value={values.memberid}
+                value={values.memberid ? values.memberid : ""}
                 name="memberid"
                 id="memberid"
                 placeholder="Member Id"
@@ -140,7 +131,7 @@ export const Memberdetails = () => {
                 type="email"
                 className="form-control"
                 onChange={(e) => handleChange("email", e.target.value)}
-                value={values.email}
+                value={values.email ? values.email : ""}
                 name="email"
                 id="email"
                 placeholder="Email"
@@ -165,7 +156,7 @@ export const Memberdetails = () => {
                 type="tel"
                 className="form-control"
                 onChange={(e) => handleChange("mobile", e.target.value)}
-                value={values.mobile}
+                value={values.mobile ? values.mobile : ""}
                 id="mobile"
                 name="mobile"
                 required
@@ -223,7 +214,7 @@ export const Memberdetails = () => {
                 type="date"
                 className="form-control"
                 onChange={(e) => handleChange("birthdate", e.target.value)}
-                value={values.birthdate.substring(0,10)}
+                value={values.birthdate ? values.birthdate.substring(0,10) : ""}
                 id="birthdate"
                 name="birthdate"
                 required
@@ -337,7 +328,7 @@ export const Memberdetails = () => {
               type="text"
               className="form-control"
               onChange={(e) => handleChange("address", e.target.value)}
-              value={values.address}
+              value={values.address ? values.address : ""}
               name="address"
               id="address"
               placeholder="1234 Main St"
@@ -353,7 +344,7 @@ export const Memberdetails = () => {
               type="text"
               className="form-control"
               onChange={(e) => handleChange("address2", e.target.value)}
-              value={values.address2}
+              value={values.address2 ? values.address2 : ""}
               name="address2"
               id="address2"
               placeholder="Apartment, studio, or floor"
@@ -373,7 +364,7 @@ export const Memberdetails = () => {
               </label>
               <CountryDropdown
                 className="form-drop"
-                value={values.country}
+                value={values.country ? values.country : ""}
                 onChange={(e) => handleChange("country", e)}
               />
               {errors.country && (
@@ -393,8 +384,8 @@ export const Memberdetails = () => {
               </label>
               <RegionDropdown
                 className="form-drop"
-                country={values.country}
-                value={values.state}
+                country={values.country ? values.country : ""}
+                value={values.state ? values.state : ""}
                 onChange={(e) => handleChange("state", e)}
               />
               {errors.state && (
@@ -418,7 +409,7 @@ export const Memberdetails = () => {
                 type="text"
                 className="form-control"
                 onChange={(e) => handleChange("city", e.target.value)}
-                value={values.city}
+                value={values.city ? values.city : ""}
                 name="city"
                 id="city"
                 placeholder="City"
@@ -443,7 +434,7 @@ export const Memberdetails = () => {
                 type="text"
                 className="form-control"
                 onChange={(e) => handleChange("zipcode", e.target.value)}
-                value={values.zipcode}
+                value={values.zipcode ? values.zipcode : ""}
                 name="zipcode"
                 id="zipcode"
                 placeholder="Zip Code"

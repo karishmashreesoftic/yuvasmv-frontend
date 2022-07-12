@@ -19,9 +19,11 @@ export const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleEventSubmit = async (e) =>{
-    await handleSubmit(e);
-    togglePopup();
+  const handleEventSubmit = async (e) => {
+    let flag = await handleSubmit(e);
+    if(flag===true){
+      togglePopup();
+    }
   }
 
   const logout = async (type) => {
@@ -101,6 +103,7 @@ export const Navbar = () => {
                             value={values.startdate}
                             required
                           />
+                          {errors.startdate && (<small className="form-text text-danger">{errors.startdate}</small>)}
                         </div>
                         <div className="end-date">
                           <label>End Date:</label>
@@ -113,6 +116,7 @@ export const Navbar = () => {
                             value={values.enddate}
                             required
                           />
+                          {errors.enddate && (<small className="form-text text-danger">{errors.enddate}</small>)}
                         </div>
                       </div>
                       <br/>

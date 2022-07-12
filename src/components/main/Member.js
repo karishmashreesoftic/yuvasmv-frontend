@@ -32,10 +32,10 @@ export const Member = ({ data, handleChange }) => {
   };
 
   const goToCarddetails = (e) => {
-    if (e.target.nodeName === "DIV") navigate(`/memberdetail/${data._id}`);
-    else if (e.target.nodeName === "A") navigate(`/memberdetail/${data._id}`);
-    else if (e.target.nodeName === "BUTTON") {
-    }
+    if (e.target.nodeName === "DIV"){
+      navigate(`/memberdetail/${data._id}`);
+    } 
+
   };
 
   return (
