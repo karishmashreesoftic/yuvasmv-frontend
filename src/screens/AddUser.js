@@ -1,6 +1,6 @@
 import "react-phone-input-2/lib/style.css";
 import React, { useState, useEffect } from "react";
-import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
+import { RegionDropdown } from "react-country-region-selector";
 import newUserValidation from "../components/validation/useNewUserValidation";
 import { GetAdminsAPI, GetGroupLeadersAPI } from "../services/APIRoutes";
 
@@ -14,6 +14,7 @@ export const AddUser = () => {
     handleChange,
     handleSubmit,
     handleCancel,
+    addUserError
   } = newUserValidation();
   const token = localStorage.getItem("userToken");
 
@@ -32,16 +33,13 @@ export const AddUser = () => {
       const a = await aresponse.json()
       setAdmins(a)
 
-      const filter = {
-        "mentor": values.mentor
-      }
       const response = await fetch(GetGroupLeadersAPI, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: token,
         },
-        body: JSON.stringify(filter)
+        body: JSON.stringify({})
       });
   
       const g = await response.json()
@@ -52,10 +50,31 @@ export const AddUser = () => {
     fetchData();
 
   }, [])
+
+  async function handleGroupleaders(val){
+
+    const gresponse = await fetch(GetGroupLeadersAPI, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", 
+        Authorization: token,
+      },
+      body: JSON.stringify({"mentor": [val]})
+    });
+
+    const g = await gresponse.json()
+    setGroupleaders(g)
+
+  }
   
  
   return (
     <div className="addusercontainer">
+      { addUserError &&
+        <div className="file-error" style={{marginTop:"0px",marginBottom:"20px"}}>
+          {addUserError}
+        </div>
+      }
       <form>
         <div className="form-row">
           <div className="form-group col-md-8">
@@ -84,7 +103,15 @@ export const AddUser = () => {
             )}
           </div>
           <div className="form-group col-md-4">
-            <label htmlFor="memberid">Member Id</label>
+            <label htmlFor="memberid">Member Id
+              <span
+                  style={{ display: "inline" }}
+                  className="form-text text-danger"
+                >
+                  {" "}
+                  *
+              </span>
+            </label>
             <input
               type="text"
               className="form-control"
@@ -94,6 +121,9 @@ export const AddUser = () => {
               id="memberid"
               placeholder="Member Id"
             />
+            {errors.memberid && (
+              <small className="form-text text-danger">{errors.memberid}</small>
+            )}
           </div>
         </div>
         <div className="form-row">
@@ -115,7 +145,7 @@ export const AddUser = () => {
               value={values.email}
               name="email"
               id="email"
-              placeholder="Email"
+              placeholder="Email (abc@xyz.jkl)"
               required
             />
             {errors.email && (
@@ -140,6 +170,7 @@ export const AddUser = () => {
               value={values.mobile}
               id="mobile"
               name="mobile"
+              placeholder="Mobile No (8*8**9*62**)"
               required
             />
             {errors.mobile && (
@@ -207,6 +238,44 @@ export const AddUser = () => {
             )}
           </div>
           <div className="from-group col-md-5">
+            <label htmlFor="mentor">
+              Mentor
+              {values.membertype === "admin" ? null : (
+                <span
+                  style={{ display: "inline" }}
+                  className="form-text text-danger"
+                >
+                  {" "}
+                  *
+                </span>
+              )}
+            </label>
+            <select
+              className="form-control"
+              defaultValue=""
+              onChange={(e) => {handleChange("mentor", e.target.value);handleGroupleaders(e.target.value)}}
+              name="mentor"
+              id="mentor"
+              placeholder="Select Mentor"
+              required={values.membertype === "admin" ? false : true}
+              disabled={values.membertype === "admin" ? true : false}
+            >
+              <option value="" disabled>
+                Select Mentor...
+              </option>
+              {
+                admins.map((a)=>
+                  <option key={a.fullname} value={a.fullname}>{a.fullname}</option>
+                )
+              }
+            </select>
+            {errors.mentor && (
+              <small className="form-text text-danger">
+                {errors.mentor}
+              </small>
+            )}
+          </div>
+          <div className="from-group col-md-5">
             <label htmlFor="groupleader">
               Group Leader
               {values.membertype === "admin" ||
@@ -255,44 +324,6 @@ export const AddUser = () => {
               </small>
             )}
           </div>
-          <div className="from-group col-md-5">
-            <label htmlFor="mentor">
-              Mentor
-              {values.membertype === "admin" ? null : (
-                <span
-                  style={{ display: "inline" }}
-                  className="form-text text-danger"
-                >
-                  {" "}
-                  *
-                </span>
-              )}
-            </label>
-            <select
-              className="form-control"
-              defaultValue=""
-              onChange={(e) => handleChange("mentor", e.target.value)}
-              name="mentor"
-              id="mentor"
-              placeholder="Select Mentor"
-              required={values.membertype === "admin" ? false : true}
-              disabled={values.membertype === "admin" ? true : false}
-            >
-              <option value="" disabled>
-                Select Mentor...
-              </option>
-              {
-                admins.map((a)=>
-                  <option key={a.fullname} value={a.fullname}>{a.fullname}</option>
-                )
-              }
-            </select>
-            {errors.groupleader && (
-              <small className="form-text text-danger">
-                {errors.groupleader}
-              </small>
-            )}
-          </div>
         </div>
         <div className="form-group">
           <label htmlFor="address">
@@ -332,27 +363,7 @@ export const AddUser = () => {
           />
         </div>
         <div className="form-row">
-          <div className="form-group col-md-6">
-            <label htmlFor="country">
-              Country
-              <span
-                style={{ display: "inline" }}
-                className="form-text text-danger"
-              >
-                {" "}
-                *
-              </span>
-            </label>
-            <CountryDropdown
-              className="form-drop"
-              value={values.country}
-              onChange={(e) => handleChange("country", e)}
-            />
-            {errors.country && (
-              <small className="form-text text-danger">{errors.country}</small>
-            )}
-          </div>
-          <div className="form-group col-md-6">
+          <div className="form-group col-md-4">
             <label htmlFor="state">
               State
               <span
@@ -365,7 +376,7 @@ export const AddUser = () => {
             </label>
             <RegionDropdown
               className="form-drop"
-              country={values.country}
+              country="India"
               value={values.state}
               onChange={(e) => handleChange("state", e)}
             />
@@ -373,9 +384,7 @@ export const AddUser = () => {
               <small className="form-text text-danger">{errors.state}</small>
             )}
           </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group col-md-6">
+          <div className="form-group col-md-4">
             <label htmlFor="city">
               City
               <span
@@ -400,7 +409,7 @@ export const AddUser = () => {
               <small className="form-text text-danger">{errors.city}</small>
             )}
           </div>
-          <div className="form-group col-md-6">
+          <div className="form-group col-md-4">
             <label htmlFor="zipcode">
               Zip Code
               <span

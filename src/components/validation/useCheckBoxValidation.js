@@ -5,6 +5,7 @@ const useCheckBoxValidation = () => {
   const [selectedgroupleader, setSelectedGroupleader] = useState([]);
 
   const addName = (checked, type, name) => {
+    console.log("addName")
     switch (type) {
       case "admin":
         setSelectedAdmin(checked ? [...selectedadmin, name] : selectedadmin.filter((_) => _ !== name));
@@ -23,11 +24,11 @@ const useCheckBoxValidation = () => {
     }
   };
 
-  const handleChange = (e, data) => {
+  const handlebarChange = (e, data) => {
     addName(e.target.checked, data.membertype, data.fullname);
   };
 
-  return { handleChange, selectedadmin, selectedgroupleader };
+  return { handlebarChange, selectedadmin, selectedgroupleader };
 };
 
 export default useCheckBoxValidation;

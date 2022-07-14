@@ -5,7 +5,6 @@ import {
   Routes,
 } from "react-router-dom";
 import { Login } from "./screens/Login";
-import { Signup } from "./screens/Signup";
 import { Home } from "./screens/Home";
 import { AddUser } from "./screens/AddUser";
 import Layout from "./components/Layout";
@@ -20,7 +19,6 @@ function App() {
       <Layout>
         <Routes>
           <Route exact path="/" element={<Login />} />
-          <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/adduser" element={<AddUser />} />
           <Route exact path="/memberdetail/:id" element={<Memberdetails />} />

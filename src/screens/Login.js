@@ -4,7 +4,7 @@ import loginValidation from '../components/validation/useLoginValidation'
 
 export const Login = () => {
 
-  const {values, errors, handleChange, handleSubmit} = loginValidation();
+  const {values, errors, loginError, handleChange, handleSubmit} = loginValidation();
   
   return (
     <div className="infocontainer">
@@ -21,11 +21,20 @@ export const Login = () => {
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input type="password" onChange={handleChange} value={values.password} className="form-control" id="password" name="password" placeholder="Enter password"/>
+              <input type="password" onChange={handleChange} value={values.password} className="form-control" id="password" name="password" placeholder="Enter Password"/>
+              {errors.password && (<small className="form-text text-danger">{errors.password}</small>)}
             </div>
             <button type="submit" className="btn btn-style">Login</button>
-            <div className='form-text form-footer'><Link to="/forgotpassword">Forgot Password?</Link></div>
+            <div className='form-text form-footer'>
+              <Link to="/forgotpassword">Forgot Password?</Link>
+            </div>
           </form>
+          {loginError &&
+            <div className="file-error">
+              {loginError}
+            </div>
+          }
+          
         </div>
       </div>
     </div>

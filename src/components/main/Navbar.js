@@ -1,30 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { LogoutAPI, LogoutAllAPI } from "../../services/APIRoutes";
-import {
-  FaUserAlt,
-  FaBars,
-  FaArrowCircleUp,
-} from "react-icons/fa";
-import { RiNotificationBadgeFill } from "react-icons/ri";
-import Popup from "../../screens/Popup";
-import eventValidation from '../validation/useEventValidation'
+import { FaBars, FaArrowCircleUp } from "react-icons/fa";
+import { FaSignOutAlt } from "react-icons/fa";
 
 export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const {values, errors, handleChange, handleSubmit, handleCancel} = eventValidation();
-  let navigate = useNavigate()
-
-  const togglePopup = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleEventSubmit = async (e) => {
-    let flag = await handleSubmit(e);
-    if(flag===true){
-      togglePopup();
-    }
-  }
+  let navigate = useNavigate();
 
   const logout = async (type) => {
     const token = localStorage.getItem("userToken");
@@ -38,7 +19,7 @@ export const Navbar = () => {
     const status = response.status;
     if (status === 200) {
       localStorage.removeItem("userToken");
-      navigate("/")
+      navigate("/");
     }
   };
 
@@ -68,7 +49,7 @@ export const Navbar = () => {
         </button>
 
         <div
-          className="collapse navbar-collapse sidebar"
+          className="collapse navbar-collapse"
           id="navbarToggler"
           style={{ justifyContent: "space-between" }}
         >
@@ -82,92 +63,6 @@ export const Navbar = () => {
             </ul>
           </div>
           <div className="headerend">
-            <div>
-              <RiNotificationBadgeFill
-                className="riNotification"
-                onClick={togglePopup}
-              />
-              {isOpen && (
-                <Popup
-                  content={
-                    <>
-                      <div className="date-container">
-                        <div className="start-date">
-                          <label>Start Date:</label>
-                          <input
-                            type="datetime-local"
-                            className="form-control"
-                            onChange={(e) =>
-                              handleChange("startdate", e.target.value)
-                            }
-                            value={values.startdate}
-                            required
-                          />
-                          {errors.startdate && (<small className="form-text text-danger">{errors.startdate}</small>)}
-                        </div>
-                        <div className="end-date">
-                          <label>End Date:</label>
-                          <input
-                            type="datetime-local"
-                            className="form-control"
-                            onChange={(e) =>
-                              handleChange("enddate", e.target.value)
-                            }
-                            value={values.enddate}
-                            required
-                          />
-                          {errors.enddate && (<small className="form-text text-danger">{errors.enddate}</small>)}
-                        </div>
-                      </div>
-                      <br/>
-                      <div>
-                        <label htmlFor="title">
-                          Title:
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          onChange={(e) =>
-                            handleChange("title", e.target.value)
-                          }
-                          value={values.title}
-                          name="title"
-                          placeholder="Title"
-                          required
-                        />
-                        {errors.title && (<small className="form-text text-danger">{errors.title}</small>)}
-                      </div>
-                      <br/>
-                      <div>
-                        <label htmlFor="message">
-                          Message:
-                        </label>
-                        <textarea
-                          className="form-control"
-                          onChange={(e) =>
-                            handleChange("message", e.target.value)
-                          }
-                          value={values.message}
-                          name="message"
-                          placeholder="Type here....."
-                          required
-                        />
-                        {errors.message && (<small className="form-text text-danger">{errors.message}</small>)}
-                      </div>
-                      <br/>
-                      <label htmlFor="Photos">Photos:</label>{" "}
-                      <input type="file" name="photos" 
-                              onChange={(e) =>
-                                handleChange("photos", e.target.files)
-                              } multiple/><br/>
-                      <button onClick={handleCancel} className="btn btn-style" style={{width:"20%",backgroundColor: "#495057"}}>Reset</button>
-                      <button onClick={(e)=>handleEventSubmit(e)} className="btn btn-style" style={{width:"20%",marginLeft: "20px"}}>Add</button>
-                    </>
-                  }
-                  handleClose={togglePopup}
-                />
-              )}
-            </div>
             <div className="dropdown">
               <div
                 className="dropdown-toggle iconstyle"
@@ -176,12 +71,11 @@ export const Navbar = () => {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <FaUserAlt className="faSignOutAlt" />
+                {/* <FaUserAlt className="faSignOutAlt" /> */}
+                <FaSignOutAlt className="faSignOutAlt" />
               </div>
               <div className="dropdown-menu" aria-labelledby="logoutoptions">
-                <div
-                  className="dropdown-item"
-                >
+                <div className="dropdown-item">
                   <Link to="/changepassword">Change Password</Link>
                 </div>
                 <div

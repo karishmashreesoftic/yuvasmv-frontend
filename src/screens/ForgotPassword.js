@@ -15,12 +15,13 @@ export const ForgotPassword = () => {
                 {errors.userid && (<small className="form-text text-danger">{errors.userid}</small>)}
             </div>
             <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input type="password" onChange={handleChange} value={values.password} className="form-control" id="password" name="password" placeholder="Enter password"/>
+                <label htmlFor="password">New Password</label>
+                <input type="password" onChange={handleChange} value={values.password} className="form-control" id="password" name="password" placeholder="Enter New Password"/>
+                {errors.password && (<small className="form-text text-danger">{errors.password}</small>)}
             </div>
             <div className="form-group">
                 <label htmlFor="cpassword">Confirm Password</label>
-                <input type="password" onChange={handleChange} value={values.cpassword} className="form-control" id="cpassword" name="cpassword" placeholder="Confirm password"/>
+                <input type="password" onChange={handleChange} value={values.cpassword} className="form-control" id="cpassword" name="cpassword" placeholder="Confirm Password"/>
                 {errors.cpassword && (<small className="form-text text-danger">{errors.cpassword}</small>)}
             </div>
             <button type="submit" className="btn btn-style">Reset Password</button>

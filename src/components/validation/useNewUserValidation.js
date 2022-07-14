@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { omit } from "lodash";
-import data from "../../data/country.json"
 import {CreateMemberAPI, EditMemberAPI} from "../../services/APIRoutes"
 const validator = require('validator');
 const token = localStorage.getItem("userToken")
@@ -21,11 +20,11 @@ const useNewUserValidation = () => {
         address2: "",
         city: "",
         zipcode: "",
-        country: "",
         state: "",
         membertype: ""
     }); 
     const [errors, setErrors] = useState({});
+    const [addUserError, setAddUserError] = useState("")
     let navigate = useNavigate();
 
     const setInitials = (member) => {
@@ -41,7 +40,6 @@ const useNewUserValidation = () => {
                 address2: member.address2,
                 city: member.city,
                 zipcode: member.zipcode,
-                country: member.country,
                 state: member.state,
                 membertype: member.membertype
             });
@@ -75,32 +73,62 @@ const useNewUserValidation = () => {
                 break;
 
             case "zipcode":
-                var country_data = data.filter((item)=>item.name===values.country)
-                var re = new RegExp(country_data.exp);
-                if(!re.test(value)){
+                if(!validator.isNumeric(value)){
                     setErrors({
                         ...errors,
-                        zipcode: "Enter a valid zipcode"
-                    });
-                }else{
+                        zipcode: "Please enter only numeric characters"
+                    })
+                }else if(!validator.isLength(value, {min: 6,max:6})){
+                    setErrors({
+                        ...errors,
+                        zipcode: "Please enter valid zipcode of 6 numbers only"
+                    })
+                }else {
                     let newObj = omit(errors, "zipcode");
-                    setErrors(newObj);
+                    setErrors(newObj)
                 }
                 break;
 
             case "mobile":
-                if(!validator.isLength(value, {min: 10})){
+                if(!validator.isNumeric(value)){
                     setErrors({
                         ...errors,
-                        mobile: "Mobile number should have atleast 10 characters"
+                        mobile: "Please enter only numeric characters"
                     })
-                }else{
+                }else if(!validator.isLength(value, {min: 10,max:10})){
+                    setErrors({
+                        ...errors,
+                        mobile: "Please enter valid mobile number of 10 numbers only"
+                    })
+                }else {
                     let newObj = omit(errors, "mobile");
                     setErrors(newObj)
                 }
                 break;
 
+            case "membertype":
+                if(value==="admin"){
+                    let newObj = omit(errors, ["mentor","groupleader","membertype"]);
+                    setErrors(newObj)
+                }else if(value==="groupleader"){
+                    let newObj = omit(errors, ["groupleader","membertype"]);
+                    setErrors(newObj)
+                }else if(value==="member"){
+                    let newObj = omit(errors, ["membertype"]);
+                    setErrors(newObj)
+                }
+                break;
+
             default:
+                if(name!=="address2" && value===""){
+                    setErrors({
+                        ...errors,
+                        [name]: "Please fill field"
+                    }) 
+                }else{
+                    let newObj = omit(errors, name);
+                    setErrors(newObj)
+                }
                 break;
         }
     }
@@ -115,9 +143,27 @@ const useNewUserValidation = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        let blank_fields = {}
 
-        
-        if (Object.keys(errors).length === 0 && Object.keys(values).length !== 0) {
+        for(let i in Object.keys(values)){
+            if(Object.keys(values)[i]!=="address2" && !values[Object.keys(values)[i]]){
+
+                if((Object.keys(values)[i]==="mentor" || Object.keys(values)[i]==="groupleader") && values.membertype==="admin"){
+
+                }else if(Object.keys(values)[i]==="groupleader" && values.membertype==="groupleader"){
+
+                }else{
+                    blank_fields = {...blank_fields, [Object.keys(values)[i]]: "Please fill this field"}
+                }
+ 
+            }
+        }
+        blank_fields = {...errors, ...blank_fields}
+
+        setErrors(blank_fields)
+
+        if (Object.keys(blank_fields).length === 0 && Object.keys(values).length !== 0) {
+            console.log("if")
 
             const response = await fetch(CreateMemberAPI, {
                 method: "POST",
@@ -129,36 +175,30 @@ const useNewUserValidation = () => {
               });
           
               const user = await response.json()
-              if(user){
+              if(user.error){
+                setAddUserError(user.error)
+              }else{
+                setValues({
+                    fullname: "",
+                    memberid: "",
+                    email: "",
+                    mobile: "",
+                    birthdate: "",
+                    groupleader: "",
+                    mentor: "",
+                    address: "",
+                    address2: "",
+                    city: "",
+                    zipcode: "",
+                    state: "",
+                    membertype: ""
+                });
                 navigate("/home")
+                
               }
-      
-            setValues({
-                fullname: "",
-                memberid: "",
-                email: "",
-                mobile: "",
-                birthdate: "",
-                groupleader: "",
-                mentor: "",
-                address: "",
-                address2: "",
-                city: "",
-                zipcode: "",
-                country: "",
-                state: "",
-                membertype: ""
-            });
 
-      
-          } else {
-            var t = "";
-            var val = Object.values(errors);
-            val.forEach((error) => {
-              t += error + `\n`;
-            })
-            alert(t);
-        }        
+
+        }       
     }
 
     const handleUpdate = async (event) => {
@@ -179,7 +219,10 @@ const useNewUserValidation = () => {
               });
           
               const user = await response.json()
-              if(user){
+              if(user.error){
+                setAddUserError(user.error)
+              }
+              if(user.member){
                 navigate("/home")
               }
               localStorage.removeItem("memberId")
@@ -196,19 +239,11 @@ const useNewUserValidation = () => {
                 address2: "",
                 city: "",
                 zipcode: "",
-                country: "",
                 state: "",
                 membertype: ""
             });
       
-          } else {
-            var t = "";
-            var val = Object.values(errors);
-            val.forEach((error) => {
-              t += error + `\n`;
-            })
-            alert(t);
-        }        
+          }      
     }
 
     const handleCancel = () => {
@@ -225,14 +260,13 @@ const useNewUserValidation = () => {
             address2: "",
             city: "",
             zipcode: "",
-            country: "",
             state: "",
             membertype: ""
         });
 
     }
 
-    return {values, errors, handleSubmit, handleChange, handleCancel, setInitials, handleUpdate }
+    return {values, errors, handleSubmit, handleChange, handleCancel, setInitials, handleUpdate, addUserError }
 }
 
 export default useNewUserValidation

@@ -17,19 +17,40 @@ const useChangePasswordValidation = () => {
     const validate = (name, value) => {
 
       switch (name) {
+        case "password":
+          if (values.oldpassword===value) {
+            setErrors({
+            ...errors,
+            password: "Old Password and New Password can't be same",
+            });
+          } else {
+              let newObj = omit(errors, "password");
+              setErrors(newObj);
+          }
+          break;
+
         case "cpassword":
-            if (values.password!==value) {
-                setErrors({
-                ...errors,
-                cpassword: "Password does not match",
-                });
-            } else {
-                let newObj = omit(errors, "cpassword");
-                setErrors(newObj);
-            }
-            break;
+          if (values.password!==value) {
+              setErrors({
+              ...errors,
+              cpassword: "Password does not match",
+              });
+          } else {
+              let newObj = omit(errors, "cpassword");
+              setErrors(newObj);
+          }
+          break;
   
         default:
+          if(value===""){
+            setErrors({
+                ...errors,
+                [name]: "Please fill field"
+            }) 
+          }else{
+              let newObj = omit(errors, name);
+              setErrors(newObj)
+          }
           break;
       }
 
@@ -46,10 +67,20 @@ const useChangePasswordValidation = () => {
         });
       };
     
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         
-        if (Object.keys(errors).length === 0 && Object.keys(values).length !== 0) {
+        let blank_fields = {}
+        for(let i in Object.keys(values)){
+            if(!values[Object.keys(values)[i]]){
+              blank_fields = {...blank_fields, [Object.keys(values)[i]]: "Please fill this field"}
+            }
+        }
+        blank_fields = {...errors, ...blank_fields}
+        setErrors(blank_fields)
+
+        if (Object.keys(blank_fields).length === 0 && Object.keys(values).length !== 0) {
 
           try{
             const result = await fetch(ChangePasswordAPI, {
@@ -60,14 +91,12 @@ const useChangePasswordValidation = () => {
                                     },
                                     body: JSON.stringify(values),
                                   });
-            const status = result.status
             const data = await result.json()
             if(data.error){
-              throw new Error(data.error)
+               throw new Error(data.error)
             }
-            if(status===200){
-              navigate("/",{replace:true});
-            }
+            navigate("/",{replace:true});
+
           }catch(error){
             alert(error.message)
           }
@@ -78,13 +107,6 @@ const useChangePasswordValidation = () => {
               cpassword: ""
             });
 
-        } else {
-            var t = "";
-            var val = Object.values(errors);
-            val.forEach((error) => {
-              t += error + `\n`;
-            })
-            alert(t);
         }
     };
     

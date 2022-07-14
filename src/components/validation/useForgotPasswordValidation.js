@@ -55,6 +55,15 @@ const useForgotPasswordValidation = () => {
             break;
   
         default:
+          if(value===""){
+            setErrors({
+                ...errors,
+                [name]: "Please fill field"
+            }) 
+          }else{
+              let newObj = omit(errors, name);
+              setErrors(newObj)
+          }
           break;
       }
     };
@@ -72,8 +81,17 @@ const useForgotPasswordValidation = () => {
     
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        let blank_fields = {}
+        for(let i in Object.keys(values)){
+            if(!values[Object.keys(values)[i]]){
+              blank_fields = {...blank_fields, [Object.keys(values)[i]]: "Please fill this field"}
+            }
+        }
+        blank_fields = {...errors, ...blank_fields}
+        setErrors(blank_fields)
         
-        if (Object.keys(errors).length === 0 && Object.keys(values).length !== 0) {
+        if (Object.keys(blank_fields).length === 0 && Object.keys(values).length !== 0) {
 
           try{
             const result = await fetch(ForgotPasswordAPI, {
@@ -83,14 +101,12 @@ const useForgotPasswordValidation = () => {
                                     },
                                     body: JSON.stringify(values),
                                   });
-            const status = result.status
             const data = await result.json()
             if(data.error){
-              throw new Error(data.error)
+               throw new Error(data.error)
             }
-            if(status===200){
-              navigate("/",{replace:true});
-            }
+            navigate("/",{replace:true});
+
           }catch(error){
             alert(error.message)
           }

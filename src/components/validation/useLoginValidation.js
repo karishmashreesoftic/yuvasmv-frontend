@@ -11,6 +11,7 @@ const useSignupValidation = () => {
         password: ""
     })
     const [errors, setErrors] = useState({});
+    const [loginError, setLoginError] = useState("")
     let navigate = useNavigate();
 
     const validate = (name, value) => {
@@ -40,6 +41,18 @@ const useSignupValidation = () => {
             }
           } 
           break;
+
+        case "password":
+          if (value==="") {
+            setErrors({
+              ...errors,
+              password: "Please fill this field",
+            });
+          } else {
+            let newObj = omit(errors, "password");
+            setErrors(newObj);
+          }
+          break;
   
         default:
           break;
@@ -59,8 +72,22 @@ const useSignupValidation = () => {
     
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+
+
+        let blank_fields = {}
+        for(let i in Object.keys(values)){
+            if(!values[Object.keys(values)[i]]){
+              blank_fields = {...blank_fields, [Object.keys(values)[i]]: "Please fill this field"}
+            }
+        }
+        blank_fields = {...errors, ...blank_fields}
+        setErrors(blank_fields)
+
+        console.log("blank_fields..",blank_fields)
+        console.log("values...",values)
         
-        if (Object.keys(errors).length === 0 && Object.keys(values).length !== 0) {
+        if (Object.keys(blank_fields).length === 0 && Object.keys(values).length !== 0) {
 
           try{
             const result = await fetch(LoginAPI, {
@@ -79,7 +106,7 @@ const useSignupValidation = () => {
               navigate("/home",{replace:true});
             }
           }catch(error){
-            alert(error.message)
+            setLoginError(error.message)
           }
 
             setValues({
@@ -87,17 +114,10 @@ const useSignupValidation = () => {
               password: ""
             });
 
-        } else {
-            var t = "";
-            var val = Object.values(errors);
-            val.forEach((error) => {
-              t += error + `\n`;
-            })
-            alert(t);
         }
     };
     
-    return {values, errors, handleSubmit, handleChange}
+    return {values, errors, handleSubmit, handleChange, loginError}
 
 }
 

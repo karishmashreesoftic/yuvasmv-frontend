@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
+import { RegionDropdown } from "react-country-region-selector";
 import newUserValidation from "../validation/useNewUserValidation";
 import { GetAdminsAPI, GetGroupLeadersAPI, MemberAPI } from "../../services/APIRoutes";
 
@@ -351,27 +351,7 @@ export const Memberdetails = () => {
             />
           </div>
           <div className="form-row">
-            <div className="form-group col-md-6">
-              <label htmlFor="country">
-                Country
-                <span
-                  style={{ display: "inline" }}
-                  className="form-text text-danger"
-                >
-                  {" "}
-                  *
-                </span>
-              </label>
-              <CountryDropdown
-                className="form-drop"
-                value={values.country ? values.country : ""}
-                onChange={(e) => handleChange("country", e)}
-              />
-              {errors.country && (
-                <small className="form-text text-danger">{errors.country}</small>
-              )}
-            </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-4">
               <label htmlFor="state">
                 State
                 <span
@@ -384,7 +364,7 @@ export const Memberdetails = () => {
               </label>
               <RegionDropdown
                 className="form-drop"
-                country={values.country ? values.country : ""}
+                country="India"
                 value={values.state ? values.state : ""}
                 onChange={(e) => handleChange("state", e)}
               />
@@ -392,9 +372,7 @@ export const Memberdetails = () => {
                 <small className="form-text text-danger">{errors.state}</small>
               )}
             </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-4">
               <label htmlFor="city">
                 City
                 <span
@@ -419,7 +397,7 @@ export const Memberdetails = () => {
                 <small className="form-text text-danger">{errors.city}</small>
               )}
             </div>
-            <div className="form-group col-md-6">
+            <div className="form-group col-md-4">
               <label htmlFor="zipcode">
                 Zip Code
                 <span
