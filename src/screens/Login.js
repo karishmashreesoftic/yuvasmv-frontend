@@ -15,8 +15,8 @@ export const Login = () => {
         <div className='form-container'>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="userid">Email Address or Mobile Number</label>
-              <input type="text" onChange={handleChange} value={values.userid} className="form-control" id="userid" name="userid" placeholder="Email Address or Mobile Number"/>
+              <label htmlFor="userid">Email Address</label>
+              <input type="text" onChange={handleChange} value={values.userid} className="form-control" id="userid" name="userid" placeholder="Email Address"/>
               {errors.userid && (<small className="form-text text-danger">{errors.userid}</small>)}
             </div>
             <div className="form-group">
