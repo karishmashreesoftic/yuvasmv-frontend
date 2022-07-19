@@ -60,6 +60,11 @@ export const Navbar = () => {
                   Home
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/gallery">
+                  Gallery
+                </NavLink>
+              </li>
             </ul>
           </div>
           <div className="headerend">

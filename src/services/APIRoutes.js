@@ -22,6 +22,10 @@ const GetMembersAPI = `${baseURL}/getmembers`
 
 const CreateEventAPI = `${baseURL}/createevent`
 
+const UploadPhotosAPI = `${baseURL}/uploadphotos`
+const GetPhotosAPI = `${baseURL}/getphotos`
+const DeletePhotoAPI = `${baseURL}/removephoto`
+
 
 
 module.exports = {
@@ -40,5 +44,8 @@ module.exports = {
     CreateEventAPI,
     ForgotPasswordAPI,
     ChangePasswordAPI,
-    UploadMembersAPI
+    UploadMembersAPI,
+    UploadPhotosAPI,
+    GetPhotosAPI,
+    DeletePhotoAPI
  }

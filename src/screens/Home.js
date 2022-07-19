@@ -5,15 +5,17 @@ import {
   GetGroupLeadersAPI,
   GetMembersAPI,
   UploadMembersAPI,
+  UploadPhotosAPI
 } from "../services/APIRoutes";
 import { useNavigate } from "react-router-dom";
 import { Member } from "../components/main/Member";
-import { FaUserPlus, FaUserTie, FaUserFriends, FaUsers } from "react-icons/fa";
+import { FaUserPlus, FaUserTie, FaUserFriends, FaUsers, FaUpload } from "react-icons/fa";
 import { RiNotificationBadgeFill } from "react-icons/ri";
 import checkBoxValidation from "../components/validation/useCheckBoxValidation";
 import { MdGroupAdd } from "react-icons/md";
 import Popup from "../screens/Popup";
 import eventValidation from "../components/validation/useEventValidation";
+import Loading from "../components/Loading";
 // import filterData from "../components/validation/useFilterData"
 
 export const Home = () => {
@@ -21,13 +23,17 @@ export const Home = () => {
   const [groupleaders, setGroupleaders] = useState([]);
   const [members, setMembers] = useState([]);
   const [fileError, setFileError] = useState("");
+  const [photoError, setPhotoError] = useState("");
   const [memberFault, setMemberFault] = useState("");
   const [memberKey, setMemberKey] = useState("");
   const [headerFault, setHeaderFault] = useState("");
+  const [photoKey, setPhotoKey] = useState("");
+  const [photoFault, setPhotoFault] = useState({});
   const [searchText, setSearchText] = useState("");
   const [filteredAdmins, setFilteredAdmins] = useState([]);
   const [filteredGroupleaders, setFilteredGroupleaders] = useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
+  const [loading, setLoading] = useState(false)
   // const {
   //   admins, groupleaders, members,
   //   getAdmins, getGroupLeaders, getMembers,
@@ -49,10 +55,10 @@ export const Home = () => {
     handleCancel,
   } = eventValidation();
   const inputRef = useRef(null);
+  const photoRef = useRef(null);
 
   let navigate = useNavigate();
   const token = localStorage.getItem("userToken");
-  let formData = new FormData();
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -78,8 +84,10 @@ export const Home = () => {
 
     const fileExtention = file.name.split(".").pop();
     if (fileExtention === "xlsx") {
+      let formData = new FormData();
       formData.append("members", file);
 
+      setLoading(true);
       const response = await fetch(UploadMembersAPI, {
         method: "POST",
         headers: {
@@ -89,6 +97,7 @@ export const Home = () => {
       });
 
       const result = await response.json();
+      setLoading(false);
       setMemberFault(result.members);
       setHeaderFault(result.header);
       setMemberKey(Object.keys(result.members));
@@ -118,6 +127,70 @@ export const Home = () => {
       setFlag(true);
     }
   };
+
+  const photosChangeHandler = async (event) => {
+    event.preventDefault();
+
+    const file = event.target.files;
+    if (file.length===0) {
+      console.log("No files")
+      setPhotoError("");
+      setPhotoFault({})
+      return;
+    }
+
+    let formData = new FormData();
+    let errors = {}
+
+    for(let i=0; i<file.length; i++){
+
+      const fileExtention = file[i].name.split(".").pop();
+
+      if(fileExtention === "jpg" || fileExtention === "jpeg" || fileExtention === "png"){
+        if(file[i].size > 1048576){
+          errors = {...errors, [file[i].name]: "File size shouldn't be more than 10MB"}
+        }else{
+          formData.append("photos", file[i]);
+        }
+      }else{
+        errors = {...errors, [file[i].name]: "You must upload file in one of these formats(.jpg, .jpeg, .png)"}
+      }
+
+    }
+
+    if(Object.keys(errors).length===0){
+      
+      setLoading(true)
+      const response = await fetch(UploadPhotosAPI, {
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
+        body: formData,
+      });
+
+      if(response.status===200){
+        setLoading(false)
+        setPhotoError("Photos uploaded successfully");
+        setPhotoFault({})
+        setPhotoKey("")
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
+
+    }else{
+      setPhotoError("There is error in uploading file. Please check and try again.")
+      setPhotoFault(errors)
+      setPhotoKey(Object.keys(errors))
+    }
+
+  };
+
+  const handlePhoto = async() => {
+    photoRef.current.click();
+  }
+
   const handleClick = () => {
     inputRef.current.click();
   };
@@ -235,6 +308,10 @@ export const Home = () => {
     filteredMembersData("");
   }, [admins, groupleaders, members]);
 
+  useEffect(() => {
+
+  }, [loading]);
+
   async function getAdmins() {
     const response = await fetch(GetAdminsAPI, {
       method: "GET",
@@ -335,7 +412,7 @@ export const Home = () => {
           style={{ width: "200px", fontSize: "15px", textAlign: "left", border: "none", boxShadow: "none" }}
           onClick={togglePopup}
         >
-          <RiNotificationBadgeFill /> Event
+          <RiNotificationBadgeFill className="faUserPlus"/> Event
           {isOpen && (
             <Popup
               content={
@@ -440,6 +517,23 @@ export const Home = () => {
             />
           )}
         </button>
+        <button
+          style={{ width: "200px", fontSize: "15px", textAlign: "left", border: "none", boxShadow: "none" }}
+          className="btn adduser-btn"
+          onClick={handlePhoto}
+        >
+          <FaUpload className="faUserPlus" />
+          Upload Photos
+          <input
+            className="btn btn-secondary"
+            id="fileInput"
+            type="file"
+            onChange={photosChangeHandler}
+            ref={photoRef}
+            style={{ display: "none" }}
+            multiple
+          />
+        </button>
       </div>
       <div className="main-container">
 
@@ -465,6 +559,22 @@ export const Home = () => {
             )}
           </div>
         )}
+
+        {photoError && (
+          <div className="file-error">
+            {photoError}
+            {photoKey && (
+              <ul className="file-error-list">
+                {photoKey &&
+                  photoKey.map((p) => (
+                    <li key={p}>{`${p} : ${photoFault[p]}`}</li>
+                  ))}
+              </ul>
+            )}
+          </div>
+        )}
+        
+        {loading && <Loading/>}
 
         {filteredAdmins.length !== 0 && (
           <div className="list-container">

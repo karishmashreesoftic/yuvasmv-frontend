@@ -64,8 +64,8 @@ export const Member = ({ data, handleChange }) => {
               <div>
                 <div>Are you sure about deleting <p style={{fontStyle:"italic"}}>{data.membertype.charAt(0).toUpperCase()+data.membertype.slice(1)}</p> <p style={{fontSize:"20px"}}>{data.fullname} ?</p></div>
                 <div>
-                  <button onClick={togglePopup} className="btn btn-style" style={{width:"20%",backgroundColor: "#495057", height: "auto"}}>Cancel</button>
-                  <button onClick={deleteUser} className="btn btn-style" style={{width:"20%",marginLeft: "20px", backgroundColor: "red", height: "auto"}}>Delete</button>
+                  <button onClick={togglePopup} className="btn btn-style popup-cancel">Cancel</button>
+                  <button onClick={deleteUser} className="btn btn-style popup-delete">Delete</button>
                 </div>
               </div>
             }

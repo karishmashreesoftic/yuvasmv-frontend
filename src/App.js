@@ -11,6 +11,7 @@ import Layout from "./components/Layout";
 import { Memberdetails } from "./components/main/Memberdetails";
 import { ChangePassword } from "./screens/ChangePassword"
 import { ForgotPassword } from "./screens/ForgotPassword"
+import { Gallery } from "./screens/Gallery";
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Login />} />
           <Route exact path="/home" element={<Home />} />
+          <Route exact path="/gallery" element={<Gallery />} />
           <Route exact path="/adduser" element={<AddUser />} />
           <Route exact path="/memberdetail/:id" element={<Memberdetails />} />
           <Route exact path="/changepassword" element={<ChangePassword />} />

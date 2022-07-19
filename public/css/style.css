@@ -189,12 +189,14 @@ label {
   border: none;
 }
 
-.navbar-light .navbar-toggler-icon,
-.navbar-light .navbar-nav .active > .nav-link {
+.navbar-light .navbar-nav .nav-link.active{
+  color: rgb(65, 171, 231);
+}
+
+.navbar-light .navbar-toggler-icon{
   color: rgb(0, 30, 48);
 }
 
-.navbar-light .navbar-nav .nav-link,
 .list-header i {
   color: rgb(65, 171, 231);
 }
@@ -486,4 +488,98 @@ select.form-control:not([size]):not([multiple]) {
   margin-left: 240px;
   margin-right: 40px;
   margin-top: 90px
+}
+
+.lds-dual-ring:after {
+  position: fixed;
+  content: " ";
+  display: block;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 6px solid rgb(253 253 253);
+  border-color: rgb(65 171 231) transparent rgb(0, 30, 48) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+  background-color: rgba(255,255,255,0.8);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-photo{
+  position: fixed;
+  font-size: 35px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  margin: 40px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+}
+
+.photos-container {
+  width: auto;
+  margin: auto;
+  margin-top: 70px;
+  height: auto;
+  display: flex;
+  align-content: flex-start;
+  padding: 10px;
+  flex-wrap: wrap;
+}
+
+.imagecontainer, .delete-popup-image {
+  width: 376px;
+  height: 236px;
+  padding: 3px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  margin: 5px;
+}
+
+.delete-popup-image{
+  margin:auto;
+  width: 506px;
+  height: 306px;
+}
+
+.imagecontainer img, .delete-popup-image img{
+  width: 100%;
+  height: 100%;
+}
+
+.delete-photo{
+  position: absolute;
+  font-size: 25px;
+  color: white;
+  margin-top: 5px;
+  margin-left: 340px;
+}
+
+.popup-cancel{
+  width: 20%;
+  background-color: #495057 !important;
+  height: auto !important;
+}
+
+.popup-delete{
+  width: 20%;
+  margin-left: 20px;
+  background-color: red !important;
+  height: auto !important;
+}
+
+.no-photo{
+  color:rgb(146, 146, 146)
 }
