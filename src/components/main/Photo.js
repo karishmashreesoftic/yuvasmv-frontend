@@ -63,7 +63,7 @@ export const Photo = ({photo}) => {
                 handleClose={togglePopup}
             />
             }
-            <img src={photo.purl} alt="event"/>
+            <img className="g-image" src={photo.purl} alt="event"/>
         </div>
     </>
   )

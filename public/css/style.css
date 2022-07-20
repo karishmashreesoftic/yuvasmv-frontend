@@ -541,11 +541,12 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 .imagecontainer, .delete-popup-image {
-  width: 376px;
-  height: 236px;
-  padding: 3px;
+  width: 372px;
+  height: 232px;
+  padding: 1px;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   margin: 5px;
+  background-color: #000;
 }
 
 .delete-popup-image{
@@ -554,9 +555,17 @@ select.form-control:not([size]):not([multiple]) {
   height: 306px;
 }
 
-.imagecontainer img, .delete-popup-image img{
+.g-image, .delete-popup-image img{
   width: 100%;
   height: 100%;
+}
+
+.delete-photo:hover ~ .g-image{
+  opacity: 0.6;
+}
+
+.g-image:hover{
+  opacity: 0.6;
 }
 
 .delete-photo{
@@ -565,6 +574,7 @@ select.form-control:not([size]):not([multiple]) {
   color: white;
   margin-top: 5px;
   margin-left: 340px;
+  z-index: 1;
 }
 
 .popup-cancel{
