@@ -413,6 +413,8 @@ export const Home = () => {
           onClick={togglePopup}
         >
           <RiNotificationBadgeFill className="faUserPlus"/> Event
+        </button>
+        
           {isOpen && (
             <Popup
               content={
@@ -516,7 +518,6 @@ export const Home = () => {
               handleClose={togglePopup}
             />
           )}
-        </button>
         <button
           style={{ width: "200px", fontSize: "15px", textAlign: "left", border: "none", boxShadow: "none" }}
           className="btn adduser-btn"
